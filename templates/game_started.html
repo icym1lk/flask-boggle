@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}Flask Boggle Game{% endblock %}
+
+{% block content %}
+
+<h1>Time Left</h1>
+<table id=boggle>
+    {% for y in range(5) %}
+    <tr>
+        {% for x in range(5) %}
+        <td><span>{{session['gameboard'][y][x]}}</span></td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+</table>
+<form action="">
+    <input type="text" name="userGuess" id="userGuess" placeholder="Your Guess Here">
+    <button>Submit</button>
+</form>
+
+{% endblock %}
