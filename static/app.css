@@ -1,11 +1,15 @@
 .board {
-	border: solid 1px black;
 	font-family: monospace;
 	font-weight: bold;
 	font-size: 200%;
+	margin-right: auto;
+	margin-left: auto;
 }
 
 .board td {
+	border: 2px solid #3d5a80;
+	color: #293241;
+	border-radius: 4px;
 	text-align: center;
 	width: 1.5em;
 	height: 1.5em;
@@ -17,16 +21,20 @@
 
 .msg.ok {
 	color: white;
-	background-color: green;
+	background-color: #1a936f;
 }
 
 .msg.err {
 	color: white;
-	background-color: tomato;
+	background-color: #ee6c4d;
 }
 
-td {
-	border: 1px solid blue;
-	border-radius: 2px;
+.words {
+	text-justify: auto;
+}
+
+body {
+	background-color: #e0fbfc;
+	color: #293241;
 	text-align: center;
 }
