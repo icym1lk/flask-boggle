@@ -1,12 +1,7 @@
-from flask import Flask, session, request, render_template, redirect, make_response, flash
+from flask import Flask, session, request, render_template, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from boggle import Boggle
-
-# key names will use to store some things in the session;
-# put here as constants so we're guaranteed to be consistent in our spelling of these
-
-GAME_BOARD_SESSION = 'gameboard'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "never-tell!"
@@ -18,9 +13,35 @@ boggle_game = Boggle()
 
 @app.route("/")
 def home_page():
-    return render_template("/home_page.html")
+    """Show the board"""
 
-@app.route("/game_started")
-def play_game():
-    session[GAME_BOARD_SESSION] = boggle_game.make_board()
-    return render_template("/game_started.html")
+    board = boggle_game.make_board()
+    session['board'] = board
+    highscore = session.get("highscore", 0)
+    times_played = session.get("times_played", 0)
+
+    return render_template("home_page.html", board=board, highscore=highscore, times_played=times_played)
+
+@app.route("/check-dict")
+def check_dict():
+    """Check if word is in dictionary."""
+
+    word = request.args["word"]
+    board = session["board"]
+    response = boggle_game.check_valid_word(board, word)
+
+    return jsonify({'result': response})
+
+@app.route("/post-score", methods=["POST"])
+def post_score():
+    """Receive score, update times_played, update high score if appropriate."""
+
+    score = request.json["score"]
+    highscore = session.get("highscore", 0)
+    times_played = session.get("times_played", 0)
+
+    session['times_played'] = times_played + 1
+    session['highscore'] = max(score, highscore)
+
+    return jsonify(brokeRecord = score > highscore)
+     
